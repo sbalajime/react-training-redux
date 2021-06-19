@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import {useSelector, useDispatch} from "react-redux";
-import {increment, decrement} from "./redux/actions";
+import {increment, decrement, setUserName, setCity, getWeather} from "./redux/actions";
 import React, {Component} from 'react';
 import {connect} from "react-redux";
 
@@ -23,12 +23,24 @@ import {connect} from "react-redux";
 // }
 
 class App extends Component {
+
+
   render(){
-    console.log('this.props', this.props)
     return(<div>
       count: {this.props.count}
       <button onClick={() => this.props.increment()}>increment</button>  
           <button onClick={() => this.props.decrement()}>decrement</button>
+
+          <div>
+            Name: {this.props.userName}
+          </div>
+          <div>
+            City: {this.props.city}
+          </div>
+          <button onClick={() => this.props.setUserName('Balaji')}>Set Name</button>
+          <button onClick={() => this.props.setCity('Thoothukudi')}>Set city</button>
+          <div>Weather: {this.props.loading ? `Loading....` : this.props.weatherData.temperature}</div>
+          <button onClick={this.props.getWeather}>Get Weather</button>
     </div>)
   }
 }
@@ -37,8 +49,12 @@ class App extends Component {
 
 const mapStateToProps = (store) => {
   return({
-    count: store.count
+    count: store.count,
+    userName: store.user.userName,
+    city: store.user.city,
+    weatherData: store.user.weatherData,
+    loading: store.user.loading
   })
 }
 
-export default connect(mapStateToProps, {increment, decrement})(App);
+export default connect(mapStateToProps, {increment, decrement, setUserName, setCity, getWeather})(App);
